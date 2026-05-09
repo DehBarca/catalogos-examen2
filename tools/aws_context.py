@@ -25,7 +25,7 @@ class AwsContext:
         self.table_notes = os.getenv("TABLE_NOTES", "notes")
         self.table_note_items = os.getenv("TABLE_NOTE_ITEMS", "note_items")
 
-        self.bucket_name = os.getenv("BUCKET_NAME", "expediente-esi3898k-examen1")
+        self.bucket_name = os.getenv("BUCKET_NAME", "750519-esi3898l-examen2")
         self.sns_topic_arn = os.getenv("SNS_TOPIC_ARN", "")
         self.api_base_url = os.getenv("API_BASE_URL", "http://localhost:8000")
         self.app_environment = os.getenv("APP_ENV", os.getenv("ENVIRONMENT", "local"))
