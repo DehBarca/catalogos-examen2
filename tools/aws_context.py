@@ -29,7 +29,7 @@ class AwsContext:
         # Hardcoded SNS Topic ARN (will be used if no env override is provided)
         self.sns_topic_arn = os.getenv(
             "SNS_TOPIC_ARN",
-            "arn:aws:sns:us-east-1:828936183282:examen1-750519:4395a2f4-53e5-403a-a5b4-994cb5fd276b",
+            "arn:aws:sns:us-east-1:828936183282:examen1-750519",
         )
         self.api_base_url = os.getenv("API_BASE_URL", "http://localhost:8000")
         self.app_environment = os.getenv("APP_ENV", os.getenv("ENVIRONMENT", "local"))
