@@ -74,6 +74,12 @@ jobs:
             docker run -d --name catalogs --restart unless-stopped -p 8000:8000 \
               -e APP_ENV=production \
               -e AWS_DEFAULT_REGION=us-east-1 \
+              -e TABLE_CLIENTS=clients \
+              -e TABLE_ADDRESSES=addresses \
+              -e TABLE_PRODUCTS=products \
+              -e BUCKET_NAME=750519-esi3898l-examen2 \
+              -e SNS_TOPIC_ARN=arn:aws:sns:us-east-1:828936183282:examen1-750519 \
+              -e METRICS_NAMESPACE=Examen2/SalesNotes \
               -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
               -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
               -e AWS_SESSION_TOKEN="${{ secrets.AWS_SESSION_TOKEN }}" \
