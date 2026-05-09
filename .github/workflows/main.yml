@@ -51,3 +51,30 @@ jobs:
           tags: |
             ghcr.io/dehbarca/catalogs:latest
             ghcr.io/dehbarca/catalogs:${{ github.sha }}
+  deploy-to-ec2:
+    runs-on: ubuntu-latest
+    needs: build-and-publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to EC2 (pull and run)
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            set -e
+            IMAGE=ghcr.io/dehbarca/catalogs:latest
+            echo "Logging into GHCR and pulling $IMAGE"
+            echo "${{ secrets.GHCR_PAT }}" | docker login ghcr.io -u "${{ secrets.GHCR_USER }}" --password-stdin
+            docker pull "$IMAGE"
+            docker stop catalogs || true
+            docker rm catalogs || true
+            docker run -d --name catalogs --restart unless-stopped -p 8000:8000 \
+              -e APP_ENV=production \
+              -e AWS_DEFAULT_REGION=us-east-1 \
+              -e AWS_ACCESS_KEY_ID="${{ secrets.AWS_ACCESS_KEY_ID }}" \
+              -e AWS_SECRET_ACCESS_KEY="${{ secrets.AWS_SECRET_ACCESS_KEY }}" \
+              -e AWS_SESSION_TOKEN="${{ secrets.AWS_SESSION_TOKEN }}" \
+              "$IMAGE"
