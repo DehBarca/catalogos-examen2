@@ -26,11 +26,16 @@ class AwsContext:
         self.table_note_items = os.getenv("TABLE_NOTE_ITEMS", "note_items")
 
         self.bucket_name = os.getenv("BUCKET_NAME", "750519-esi3898l-examen2")
-        self.sns_topic_arn = os.getenv("SNS_TOPIC_ARN", "")
+        # Hardcoded SNS Topic ARN (will be used if no env override is provided)
+        self.sns_topic_arn = os.getenv(
+            "SNS_TOPIC_ARN",
+            "arn:aws:sns:us-east-1:828936183282:examen1-750519:4395a2f4-53e5-403a-a5b4-994cb5fd276b",
+        )
         self.api_base_url = os.getenv("API_BASE_URL", "http://localhost:8000")
         self.app_environment = os.getenv("APP_ENV", os.getenv("ENVIRONMENT", "local"))
+        # Use the namespace from .env.example as default and force metrics enabled
         self.metrics_namespace = os.getenv("METRICS_NAMESPACE", "Examen2/SalesNotes")
-        self.metrics_enabled = os.getenv("METRICS_ENABLED", "true").lower() in {"1", "true", "yes", "on"}
+        self.metrics_enabled = True
 
     def table(self, table_name: str):
         """Return a DynamoDB Table resource for the provided table name."""
